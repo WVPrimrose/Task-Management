@@ -1,5 +1,5 @@
 // Retrieve tasks and nextId from localStorage
-let taskList = JSON.parse(localStorage.getItem("tasks"));
+let taskList = JSON.parse(localStorage.getItem("tasks")) || [];
 let nextId = JSON.parse(localStorage.getItem("nextId"));
 
 // Todo: create a function to generate a unique task id
@@ -59,13 +59,13 @@ function handleAddTask(event){
       }
 }
 
-for (let project of projects) {
-    if (project.status === 'to-do') {
-      todoList.append(createProjectCard(project));
-    } else if (project.status === 'in-progress') {
-      inProgressList.append(createProjectCard(project));
-    } else if (project.status === 'done') {
-      doneList.append(createProjectCard(project));
+for (let task of taskList) {
+    if (task.status === 'to-do') {
+      todoList.append(createProjectCard(task));
+    } else if (task.status === 'in-progress') {
+      inProgressList.append(createProjectCard(task));
+    } else if (task.status === 'done') {
+      doneList.append(createProjectCard(task));
     }
   }
 
