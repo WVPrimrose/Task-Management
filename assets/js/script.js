@@ -61,6 +61,12 @@ function handleAddTask(){
 }
 
 function handleFormSubmit (event) {
+  let task = {
+    title: event.target[0].value,
+    date: dayjs(event.target[1].value, DD/MM/YYYY),
+    description: event.target[2].value
+  }
+  console.log(task)
  event.preventDefault();
 console.log(event)
 
@@ -114,7 +120,7 @@ function handleDrop(event, ui) {
 }
 
 // Todo: when the page loads, render the task list, add event listeners, make lanes droppable, and make the due date field a date picker
-saveChanges.on("submit",handleAddTask)
+saveChanges.on("submit",handleFormSubmit)
 $(document).ready(function () {
   
 
