@@ -14,3 +14,21 @@ body {
 .task-card:hover {
   cursor: grab;
 }
+
+label {
+  margin-bottom: 30px;
+}
+
+#label-description {
+  position: relative;
+  bottom: 250px;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+#description {
+  position: relative;
+  right: 125px;
+  top: 20px;
+}
