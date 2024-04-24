@@ -21,10 +21,7 @@ label {
 
 #label-description {
   position: relative;
-  bottom: 250px;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
+  bottom: 245px;
 }
 
 #description {

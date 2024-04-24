@@ -22,11 +22,13 @@ function createTaskCard(task) {
   const cardBody = $('<div>').addClass('card-body');
   const cardDescription = $('<p>').addClass('card-text').text(project.type);
   const cardDueDate = $('<p>').addClass('card-text').text(project.dueDate);
+  const dueDate = $('<input>').text(dueDate.format(MM/DD/YYYY));
   const cardDeleteBtn = $('<button>')
     .addClass('btn btn-danger delete')
     .text('Delete')
     .attr('data-project-id', project.id);
   cardDeleteBtn.on('click', handleDeleteProject);
+  console.log(createTaskCard)
 }
 
 // Todo: create a function to render the task list and make cards draggable
@@ -49,7 +51,7 @@ cardDeleteBtn.on('click', handleDeleteProject);
 function handleAddTask(){
     if (project.dueDate && project.status !== 'done') {
         const now = dayjs();
-        const taskDueDate = dayjs(project.dueDate, 'DD/MM/YYYY');
+        const taskDueDate = dayjs(project.dueDate, 'MM/DD/YYYY');
         // ? If the task is due today, make the card yellow. If it is overdue, make it red.
         if (now.isSame(taskDueDate, 'day')) {
           taskCard.addClass('bg-warning text-white');
@@ -63,7 +65,7 @@ function handleAddTask(){
 function handleFormSubmit (event) {
   let task = {
     title: event.target[0].value,
-    date: dayjs(event.target[1].value, DD/MM/YYYY),
+    date: dayjs(event.target[1].value, MM/DD/YYYY),
     description: event.target[2].value
   }
   console.log(task)
@@ -122,6 +124,6 @@ function handleDrop(event, ui) {
 // Todo: when the page loads, render the task list, add event listeners, make lanes droppable, and make the due date field a date picker
 saveChanges.on("submit",handleFormSubmit)
 $(document).ready(function () {
-  
+  handleFormSubmit.preventDefault();
 
 });
