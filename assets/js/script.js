@@ -63,13 +63,19 @@ function handleAddTask(){
 }
 
 function handleFormSubmit (event) {
+  event.preventDefault();
   let task = {
-    title: event.target[0].value,
-    date: dayjs(event.target[1].value, MM/DD/YYYY),
-    description: event.target[2].value
+    title: document.getElementById('task-title'),
+    date: document.getElementById('date'),
+    taskDescription: document.getElementById('task-description'),
   }
-  console.log(task)
- event.preventDefault();
+
+  taskList.push(task);
+  localStorage.setItem("tasks", JSON.stringify(taskList));
+  // dayjs(task.date).format(MM/DD/YYYY);
+  // dayjs
+  console.log(task);
+  
 console.log(event)
 
 
