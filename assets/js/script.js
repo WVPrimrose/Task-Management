@@ -1,7 +1,8 @@
 // Retrieve tasks and nextId from localStorage
 let taskList = JSON.parse(localStorage.getItem("tasks")) || [];
 let nextId = JSON.parse(localStorage.getItem("nextId"));
-let saveChanges = $('#save')
+let saveChanges = $('#save');
+const toDoContainer =document.getElementById('todo-cards');
 
 // Todo: create a function to generate a unique task id
 function generateTaskId() {
@@ -11,13 +12,16 @@ const projectFormEl = $('#project-form');
 const projectNameInputEl = $('#project-name-input');
 const projectTypeInputEl = $('#project-type-input');
 const projectDateInputEl = $('#taskDueDate');
+if (nextId === null) {
+  
+}
 }
 
 // Todo: create a function to create a task card
 function createTaskCard(task) {
     const taskCard = $('<div>')
     .addClass('card project-card draggable my-3')
-    .attr('data-project-id', project.id);
+    // .attr('data-project-id', project.id);
   const cardHeader = $('<div>').addClass('card-header h4').text(project.name);
   const cardBody = $('<div>').addClass('card-body');
   const cardDescription = $('<p>').addClass('card-text').text(project.type);
@@ -32,19 +36,24 @@ function createTaskCard(task) {
 }
 
 // Todo: create a function to render the task list and make cards draggable
-function renderTaskList() {const taskCard = $('<div>')
+function renderTaskList(project) {
+const {title, taskDescription, date} = project
+console.log(title, taskDescription, date);
+  const taskCard = $('<div>')
 .addClass('card project-card draggable my-3')
-.attr('data-project-id', project.id);
-const cardHeader = $('<div>').addClass('card-header h4').text(project.name);
+// .attr('data-project-id', project.id);
+const cardHeader = $('<div>').addClass('card-header h4').text(project.title);
 const cardBody = $('<div>').addClass('card-body');
-const cardDescription = $('<p>').addClass('card-text').text(project.type);
-const cardDueDate = $('<p>').addClass('card-text').text(project.dueDate);
+const cardDescription = $('<p>').addClass('card-text').text(project.taskDescription);
+const cardDueDate = $('<p>').addClass('card-text').text(project.date);
 const cardDeleteBtn = $('<button>')
 .addClass('btn btn-danger delete')
 .text('Delete')
-.attr('data-project-id', project.id);
-cardDeleteBtn.on('click', handleDeleteProject);
-
+// .attr('data-project-id', project.id);
+// cardDeleteBtn.on('click', handleDeleteProject);
+cardBody.append(cardHeader, cardDescription, cardDueDate)
+toDoContainer.append(cardBody)
+console.log(project);
 }
 
 // Todo: create a function to handle adding a new task
@@ -65,9 +74,9 @@ function handleAddTask(){
 function handleFormSubmit (event) {
   event.preventDefault();
   let task = {
-    title: document.getElementById('task-title'),
-    date: document.getElementById('date'),
-    taskDescription: document.getElementById('task-description'),
+    title: document.getElementById('task-title').value,
+    date: document.getElementById('task-date').value,
+    taskDescription: document.getElementById('description').value,
   }
 
   taskList.push(task);
@@ -77,8 +86,7 @@ function handleFormSubmit (event) {
   console.log(task);
   
 console.log(event)
-
-
+renderTaskList(task)
 }
 
 // for (let task of taskList) {
