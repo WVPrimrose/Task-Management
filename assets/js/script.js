@@ -31,8 +31,12 @@ function createTaskCard(task) {
     .addClass('btn btn-danger delete')
     .text('Delete')
     .attr('data-project-id', project.id);
+      cardBody.appendChild(cardDescription, cardDueDate, cardDeleteBtn);
+      taskCard.appendChild(cardHeader, cardBody);
   cardDeleteBtn.on('click', handleDeleteProject);
   console.log(createTaskCard)
+
+  return taskCard;
 }
 
 // Todo: create a function to render the task list and make cards draggable
@@ -42,10 +46,11 @@ console.log(title, taskDescription, date);
   const taskCard = $('<div>')
 .addClass('card project-card draggable my-3')
 // .attr('data-project-id', project.id);
-const cardHeader = $('<div>').addClass('card-header h4').text(project.title);
+for (let i = 0; i < project.length; i++) {
+const cardHeader = $('<div>').addClass('card-header h4').text('');
 const cardBody = $('<div>').addClass('card-body');
-const cardDescription = $('<p>').addClass('card-text').text(project.taskDescription);
-const cardDueDate = $('<p>').addClass('card-text').text(project.date);
+const cardDescription = $('<p>').addClass('card-text').text('');
+const cardDueDate = $('<p>').addClass('card-text').text('');
 const cardDeleteBtn = $('<button>')
 .addClass('btn btn-danger delete')
 .text('Delete')
@@ -53,6 +58,8 @@ const cardDeleteBtn = $('<button>')
 // cardDeleteBtn.on('click', handleDeleteProject);
 cardBody.append(cardHeader, cardDescription, cardDueDate)
 toDoContainer.append(cardBody)
+}
+
 console.log(project);
 }
 
