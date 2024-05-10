@@ -22,15 +22,15 @@ function createTaskCard(task) {
     const taskCard = $('<div>')
     .addClass('card project-card draggable my-3')
     // .attr('data-project-id', project.id);
-  const cardHeader = $('<div>').addClass('card-header h4').text(project.name);
+  const cardHeader = $('<div>').addClass('card-header h4').text(task.name);
   const cardBody = $('<div>').addClass('card-body');
-  const cardDescription = $('<p>').addClass('card-text').text(project.type);
-  const cardDueDate = $('<p>').addClass('card-text').text(project.dueDate);
+  const cardDescription = $('<p>').addClass('card-text').text(task.type);
+  const cardDueDate = $('<p>').addClass('card-text').text(task.dueDate);
   const dueDate = $('<input>').text(dueDate.format(MM/DD/YYYY));
   const cardDeleteBtn = $('<button>')
     .addClass('btn btn-danger delete')
     .text('Delete')
-    .attr('data-project-id', project.id);
+    .attr('data-project-id', task.id);
       cardBody.appendChild(cardDescription, cardDueDate, cardDeleteBtn);
       taskCard.appendChild(cardHeader, cardBody);
   cardDeleteBtn.on('click', handleDeleteProject);
@@ -41,12 +41,12 @@ function createTaskCard(task) {
 
 // Todo: create a function to render the task list and make cards draggable
 function renderTaskList(project) {
-const {title, taskDescription, date} = project
+const {title, taskDescription, date} = task
 console.log(title, taskDescription, date);
   const taskCard = $('<div>')
 .addClass('card project-card draggable my-3')
 // .attr('data-project-id', project.id);
-for (let i = 0; i < project.length; i++) {
+for (let i = 0; i < task.length; i++) {
 const cardHeader = $('<div>').addClass('card-header h4').text('');
 const cardBody = $('<div>').addClass('card-body');
 const cardDescription = $('<p>').addClass('card-text').text('');
@@ -65,9 +65,9 @@ console.log(project);
 
 // Todo: create a function to handle adding a new task
 function handleAddTask(){
-    if (project.dueDate && project.status !== 'done') {
+    if (task.dueDate && task.status !== 'done') {
         const now = dayjs();
-        const taskDueDate = dayjs(project.dueDate, 'MM/DD/YYYY');
+        const taskDueDate = dayjs(task.dueDate, 'MM/DD/YYYY');
         // ? If the task is due today, make the card yellow. If it is overdue, make it red.
         if (now.isSame(taskDueDate, 'day')) {
           taskCard.addClass('bg-warning text-white');
@@ -94,6 +94,7 @@ function handleFormSubmit (event) {
   
 console.log(event)
 renderTaskList(task)
+createTaskCard();
 }
 
 // for (let task of taskList) {
