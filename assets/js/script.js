@@ -33,14 +33,14 @@ function createTaskCard(task) {
     .attr('data-project-id', task.id);
       cardBody.appendChild(cardDescription, cardDueDate, cardDeleteBtn);
       taskCard.appendChild(cardHeader, cardBody);
-  cardDeleteBtn.on('click', handleDeleteProject);
+  cardDeleteBtn.on('click', handleDeleteTask);
   console.log(createTaskCard)
 
   return taskCard;
 }
 
 // Todo: create a function to render the task list and make cards draggable
-function renderTaskList(project) {
+function renderTaskList(task) {
 const {title, taskDescription, date} = task
 console.log(title, taskDescription, date);
   const taskCard = $('<div>')
@@ -55,12 +55,11 @@ const cardDeleteBtn = $('<button>')
 .addClass('btn btn-danger delete')
 .text('Delete')
 // .attr('data-project-id', project.id);
-// cardDeleteBtn.on('click', handleDeleteProject);
+// cardDeleteBtn.on('click', handleDeleteTask);
 cardBody.append(cardHeader, cardDescription, cardDueDate)
 toDoContainer.append(cardBody)
 }
 
-console.log(project);
 }
 
 // Todo: create a function to handle adding a new task
@@ -92,9 +91,9 @@ function handleFormSubmit (event) {
   // dayjs
   console.log(task);
   
-console.log(event)
-renderTaskList(task)
-createTaskCard();
+console.log(event);
+createTaskCard(task);
+renderTaskList(task);
 }
 
 // for (let task of taskList) {
@@ -110,13 +109,13 @@ createTaskCard();
 // Todo: create a function to handle deleting a task
 function handleDeleteTask(event){
     const projectId = $(this).attr('data-project-id');
-    const projects = readProjectsFromStorage();  projects.forEach((project) => {
+    const tasks = readTaskFromStorage();  tasks.forEach((task) => {
     if (project.id === projectId) {
-      projects.splice(projects.indexOf(project), 1);
+      tasks.splice(tasks.indexOf(task), 1);
     }
   });
 
-  saveProjectsToStorage(projects);
+  saveTaskToStorage(tasks);
 
   printProjectData();
 
@@ -124,7 +123,7 @@ function handleDeleteTask(event){
 
 // Todo: create a function to handle dropping a task into a new status lane
 function handleDrop(event, ui) {
-    const projects = readProjectsFromStorage();
+    const tasks = readProjectsFromStorage();
 
     // ? Get the project id from the event
     const taskId = ui.draggable[0].dataset.projectId;
@@ -132,7 +131,7 @@ function handleDrop(event, ui) {
     // ? Get the id of the lane that the card was dropped into
     const newStatus = event.target.id;
   
-    for (let project of projects) {
+    for (let task of tasks) {
       // ? Find the project card by the `id` and update the project status.
       if (project.id === taskId) {
         project.status = newStatus;
