@@ -2,7 +2,7 @@
 let taskList = JSON.parse(localStorage.getItem("tasks")) || [];
 let nextId = JSON.parse(localStorage.getItem("nextId"));
 let saveChanges = $('#save');
-const toDoContainer =document.getElementById('todo-cards');
+const toDoContainer = $('#todo-cards');
 
 // Todo: create a function to generate a unique task id
 function generateTaskId() {
@@ -26,13 +26,12 @@ function createTaskCard(task) {
   const cardBody = $('<div>').addClass('card-body');
   const cardDescription = $('<p>').addClass('card-text').text(task.type);
   const cardDueDate = $('<p>').addClass('card-text').text(task.dueDate);
-  const dueDate = $('<input>').text(dueDate.format(MM/DD/YYYY));
   const cardDeleteBtn = $('<button>')
     .addClass('btn btn-danger delete')
     .text('Delete')
     .attr('data-project-id', task.id);
-      cardBody.appendChild(cardDescription, cardDueDate, cardDeleteBtn);
-      taskCard.appendChild(cardHeader, cardBody);
+      cardBody.append(cardDescription, cardDueDate, cardDeleteBtn);
+      taskCard.append(cardHeader, cardBody);
   cardDeleteBtn.on('click', handleDeleteTask);
   console.log(createTaskCard)
 
@@ -56,8 +55,8 @@ const cardDeleteBtn = $('<button>')
 .text('Delete')
 // .attr('data-project-id', project.id);
 // cardDeleteBtn.on('click', handleDeleteTask);
-cardBody.append(cardHeader, cardDescription, cardDueDate)
-toDoContainer.append(cardBody)
+cardBody.append(task)
+toDoContainer.append(task)
 }
 
 }
@@ -92,6 +91,8 @@ function handleFormSubmit (event) {
   console.log(task);
   
 console.log(event);
+
+taskList.push(createTaskCard(task));
 createTaskCard(task);
 renderTaskList(task);
 }
