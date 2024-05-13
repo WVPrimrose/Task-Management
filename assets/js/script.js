@@ -3,6 +3,8 @@ let taskList = JSON.parse(localStorage.getItem("tasks")) || [];
 let nextId = JSON.parse(localStorage.getItem("nextId"));
 let saveChanges = $('#save');
 const toDoContainer = $('#todo-cards');
+const inProgressContainer = $('#in-progress-cards');
+const doneContainer = $('#done-cards');
 
 // Todo: create a function to generate a unique task id
 function generateTaskId() {
@@ -22,10 +24,10 @@ function createTaskCard(task) {
     const taskCard = $('<div>')
     .addClass('card project-card draggable my-3')
     // .attr('data-project-id', project.id);
-  const cardHeader = $('<div>').addClass('card-header h4').text(task.name);
+  const cardHeader = $('<div>').addClass('card-header h4').text(task.title);
   const cardBody = $('<div>').addClass('card-body');
-  const cardDescription = $('<p>').addClass('card-text').text(task.type);
-  const cardDueDate = $('<p>').addClass('card-text').text(task.dueDate);
+  const cardDescription = $('<p>').addClass('card-text').text(task.taskDescription);
+  const cardDueDate = $('<p>').addClass('card-text').text(task.date);
   const cardDeleteBtn = $('<button>')
     .addClass('btn btn-danger delete')
     .text('Delete')
@@ -34,29 +36,36 @@ function createTaskCard(task) {
       taskCard.append(cardHeader, cardBody);
   cardDeleteBtn.on('click', handleDeleteTask);
   console.log(createTaskCard)
-
-  return taskCard;
+      toDoContainer.append(taskCard)
 }
 
 // Todo: create a function to render the task list and make cards draggable
-function renderTaskList(task) {
-const {title, taskDescription, date} = task
-console.log(title, taskDescription, date);
-  const taskCard = $('<div>')
-.addClass('card project-card draggable my-3')
+function renderTaskList() {
+
 // .attr('data-project-id', project.id);
-for (let i = 0; i < task.length; i++) {
-const cardHeader = $('<div>').addClass('card-header h4').text('');
+for (let i = 0; i < taskList.length; i++) {
+  const taskCard = $('<div>')
+  .addClass('card project-card draggable my-3')
+const cardHeader = $('<div>').addClass('card-header h4').text(taskList[i].title);
 const cardBody = $('<div>').addClass('card-body');
-const cardDescription = $('<p>').addClass('card-text').text('');
-const cardDueDate = $('<p>').addClass('card-text').text('');
+const cardDescription = $('<p>').addClass('card-text').text(taskList[i].taskDescription);
+const cardDueDate = $('<p>').addClass('card-text').text(taskList[i].date);
 const cardDeleteBtn = $('<button>')
 .addClass('btn btn-danger delete')
 .text('Delete')
 // .attr('data-project-id', project.id);
-// cardDeleteBtn.on('click', handleDeleteTask);
-cardBody.append(task)
-toDoContainer.append(task)
+cardDeleteBtn.on('click', handleDeleteTask);
+cardBody.append(cardDescription, cardDueDate, cardDeleteBtn)
+taskCard.append(cardHeader, cardBody)
+
+    if (taskList.status === 'to-do') {
+      toDoContainer.append(taskCard)
+    } else if (task.status === 'in-progress') {
+      inProgressContainer.append(taskCard)
+    } else if (task.status === 'done') {
+      doneContainer.append(taskCard);
+    }
+  
 }
 
 }
@@ -82,6 +91,7 @@ function handleFormSubmit (event) {
     title: document.getElementById('task-title').value,
     date: document.getElementById('task-date').value,
     taskDescription: document.getElementById('description').value,
+    // status: ----
   }
 
   taskList.push(task);
@@ -92,20 +102,11 @@ function handleFormSubmit (event) {
   
 console.log(event);
 
-taskList.push(createTaskCard(task));
+// taskList.push(createTaskCard(task));
 createTaskCard(task);
-renderTaskList(task);
 }
 
-// for (let task of taskList) {
-//     if (task.status === 'to-do') {
-//       todoList.append(createProjectCard(task));
-//     } else if (task.status === 'in-progress') {
-//       inProgressList.append(createProjectCard(task));
-//     } else if (task.status === 'done') {
-//       doneList.append(createProjectCard(task));
-//     }
-//   }
+
 
 // Todo: create a function to handle deleting a task
 function handleDeleteTask(event){
@@ -148,3 +149,4 @@ saveChanges.on("submit",handleFormSubmit)
 $(document).ready(function () {
 
 });
+renderTaskList();
