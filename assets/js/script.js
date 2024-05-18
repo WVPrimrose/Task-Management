@@ -1,5 +1,4 @@
 // Retrieve tasks and nextId from localStorage
-let taskList = JSON.parse(localStorage.getItem("tasks")) || [];
 let nextId = JSON.parse(localStorage.getItem("nextId"));
 let saveChanges = $('#save');
 const toDoContainer = $('#todo-cards');
@@ -41,6 +40,15 @@ function createTaskCard(task) {
 
 // Todo: create a function to render the task list and make cards draggable
 function renderTaskList() {
+  let taskList = JSON.parse(localStorage.getItem("tasks")) || [];
+  const todoList = $('#todo-cards');
+  todoList.empty();
+
+  const inProgressList = $('#in-progress-cards');
+  inProgressList.empty();
+
+  const doneList = $('#done-cards');
+  doneList.empty();
 
 // .attr('data-project-id', project.id);
 for (let i = 0; i < taskList.length; i++) {
@@ -58,15 +66,31 @@ cardDeleteBtn.on('click', handleDeleteTask);
 cardBody.append(cardDescription, cardDueDate, cardDeleteBtn)
 taskCard.append(cardHeader, cardBody)
 
-    if (taskList.status === 'to-do') {
+    if (taskList[i].status === 'to-do') {
       toDoContainer.append(taskCard)
-    } else if (task.status === 'in-progress') {
+    } else if (taskList[i].status === 'in-progress') {
       inProgressContainer.append(taskCard)
-    } else if (task.status === 'done') {
+    } else if (taskList[i].status === 'done') {
       doneContainer.append(taskCard);
     }
   
 }
+
+$('.draggable').draggable({
+  opacity: 0.7,
+  zIndex: 100,
+  // ? This is the function that creates the clone of the card that is dragged. This is purely visual and does not affect the data.
+  helper: function (e) {
+    // ? Check if the target of the drag event is the card itself or a child element. If it is the card itself, clone it, otherwise find the parent card  that is draggable and clone that.
+    const original = $(e.target).hasClass('ui-draggable')
+      ? $(e.target)
+      : $(e.target).closest('.ui-draggable');
+    // ? Return the clone with the width set to the width of the original card. This is so the clone does not take up the entire width of the lane. This is to also fix a visual bug where the card shrinks as it's dragged to the right.
+    return original.clone().css({
+      width: original.outerWidth(),
+    });
+  },
+});
 
 }
 
@@ -91,19 +115,19 @@ function handleFormSubmit (event) {
     title: document.getElementById('task-title').value,
     date: document.getElementById('task-date').value,
     taskDescription: document.getElementById('description').value,
-    // status: ----
+    status: 'to-do',
+    // id:
   }
+  let taskList = JSON.parse(localStorage.getItem("tasks")) || [];
+  dayjs(task.date).format("MM/DD/YYYY");
 
   taskList.push(task);
   localStorage.setItem("tasks", JSON.stringify(taskList));
-  // dayjs(task.date).format(MM/DD/YYYY);
-  // dayjs
+
   console.log(task);
   
-console.log(event);
-
 // taskList.push(createTaskCard(task));
-createTaskCard(task);
+renderTaskList();
 }
 
 
@@ -125,28 +149,33 @@ function handleDeleteTask(event){
 
 // Todo: create a function to handle dropping a task into a new status lane
 function handleDrop(event, ui) {
-    const tasks = readProjectsFromStorage();
+  let taskList = JSON.parse(localStorage.getItem("tasks")) || [];
 
     // ? Get the project id from the event
     const taskId = ui.draggable[0].dataset.projectId;
+    console.log(taskId);
   
     // ? Get the id of the lane that the card was dropped into
     const newStatus = event.target.id;
-  
-    for (let task of tasks) {
+  console.log(newStatus);
+    for (let task of taskList) {
       // ? Find the project card by the `id` and update the project status.
-      if (project.id === taskId) {
-        project.status = newStatus;
+      if (task.id === taskId) {
+        task.status = newStatus;
       }
     }
     // ? Save the updated projects array to localStorage (overwritting the previous one) and render the new project data to the screen.
     localStorage.setItem('projects', JSON.stringify(projects));
+    
     printProjectData();
 }
 
 // Todo: when the page loads, render the task list, add event listeners, make lanes droppable, and make the due date field a date picker
 saveChanges.on("submit",handleFormSubmit)
 $(document).ready(function () {
-
+  renderTaskList();
+  $('.lane').droppable({
+    accept: '.draggable',
+    drop: handleDrop,
+  });
 });
-renderTaskList();
