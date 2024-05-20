@@ -135,15 +135,15 @@ renderTaskList();
 // Todo: create a function to handle deleting a task
 function handleDeleteTask(event){
     const projectId = $(this).attr('data-project-id');
-    const tasks = readTaskFromStorage();  tasks.forEach((task) => {
-    if (project.id === projectId) {
+    const tasks = renderTaskList();  tasks.forEach((task) => {
+    if (task.id === taskId) {
       tasks.splice(tasks.indexOf(task), 1);
     }
   });
 
   saveTaskToStorage(tasks);
 
-  printProjectData();
+  renderTaskList();
 
 }
 
