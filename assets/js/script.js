@@ -152,7 +152,7 @@ function handleDrop(event, ui) {
   let taskList = JSON.parse(localStorage.getItem("tasks")) || [];
 
     // ? Get the project id from the event
-    const taskId = ui.draggable[0].dataset.projectId;
+    const taskId = ui.draggable[0].dataset.taskId;
     console.log(taskId);
   
     // ? Get the id of the lane that the card was dropped into
@@ -165,9 +165,9 @@ function handleDrop(event, ui) {
       }
     }
     // ? Save the updated projects array to localStorage (overwritting the previous one) and render the new project data to the screen.
-    localStorage.setItem('projects', JSON.stringify(projects));
+    localStorage.setItem('tasks', JSON.stringify(taskList));
     
-    printProjectData();
+    renderTaskList();
 }
 
 // Todo: when the page loads, render the task list, add event listeners, make lanes droppable, and make the due date field a date picker
