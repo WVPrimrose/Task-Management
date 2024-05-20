@@ -137,13 +137,13 @@ function handleDeleteTask(event){
     const projectId = $(this).attr('data-project-id');
     const tasks = renderTaskList();  tasks.forEach((task) => {
     if (task.id === taskId) {
-      tasks.splice(tasks.indexOf(task), 1);
+      tasks.splice(tasks.indexOf(taskList[i]), 1);
     }
   });
 
   saveTaskToStorage(tasks);
 
-  renderTaskList();
+return renderTaskList();
 
 }
 
